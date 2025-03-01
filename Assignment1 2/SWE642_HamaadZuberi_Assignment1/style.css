@@ -1,0 +1,16 @@
+body {
+  background-color: #f0f0f0;
+}
+h1 {
+  color: #006633;
+}
+.heading-box {
+  border: 5px solid #006633;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.custom-style {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
