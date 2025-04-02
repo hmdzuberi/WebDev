@@ -109,8 +109,10 @@
 
       <!-- Buttons -->
       <div class="form-actions">
-        <button type="submit">Submit</button>
-        <button type="button" @click="handleCancel">Cancel</button>
+        <button type="submit" :disabled="isSubmitting">
+          {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+        </button>
+        <button type="button" @click="handleCancel" :disabled="isSubmitting">Cancel</button>
       </div>
     </form>
   </div>
@@ -118,12 +120,12 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Import useRouter
+import { useRouter } from 'vue-router';
 
-const router = useRouter(); // Get router instance
+const router = useRouter();
 
-// Reactive object to hold all form data
-const formData = ref({
+// Define initial state for resetting the form
+const getInitialFormData = () => ({
   firstName: '',
   lastName: '',
   streetAddress: '',
@@ -133,14 +135,24 @@ const formData = ref({
   telephone: '',
   email: '',
   surveyDate: '',
-  likedMost: [], // Array for checkboxes
-  interestedVia: '', // Value from radio button
-  likelihood: '', // Value from dropdown
+  likedMost: [],
+  interestedVia: '',
+  likelihood: '',
   comments: ''
 });
 
+// Reactive object to hold all form data
+const formData = ref(getInitialFormData());
+
+// Reactive variable to track submission state
+const isSubmitting = ref(false);
+
 // Updated handleSubmit function
-const handleSubmit = () => {
+const handleSubmit = async () => {
+  if (isSubmitting.value) return; // Prevent double submission
+
+  isSubmitting.value = true; // Indicate submission started
+
   // 1. Create the payload object in the desired API structure
   const apiPayload = {
     // Direct mappings
@@ -153,63 +165,77 @@ const handleSubmit = () => {
     telephone: formData.value.telephone,
     email: formData.value.email,
     surveyDate: formData.value.surveyDate,
-    additionalComments: formData.value.comments, // Map 'comments' to 'additionalComments'
+    additionalComments: formData.value.comments,
 
     // Map likedMost array to boolean fields
     likedStudents: formData.value.likedMost.includes('students'),
     likedLocation: formData.value.likedMost.includes('location'),
     likedCampus: formData.value.likedMost.includes('campus'),
     likedAtmosphere: formData.value.likedMost.includes('atmosphere'),
-    likedDormRooms: formData.value.likedMost.includes('dorm rooms'), // Ensure value matches exactly
+    likedDormRooms: formData.value.likedMost.includes('dorm rooms'),
     likedSports: formData.value.likedMost.includes('sports'),
 
     // Map interestedVia to interestSource (convert to lowercase)
     interestSource: formData.value.interestedVia.toLowerCase(),
 
     // Map likelihood to recommendationLikelihood (convert to lowercase)
-    recommendationLikelihood: formData.value.likelihood.toLowerCase().replace(' ', '') // e.g., "very likely"
+    recommendationLikelihood: formData.value.likelihood.toLowerCase().replace(' ', '')
   };
-  // Note: The API expects lowercase for interestSource and recommendationLikelihood.
-  // We also remove space from "very likely" just in case, though lowercase might be enough.
 
-  // 2. Log the transformed payload to verify
-  console.log('Transformed data for API:', JSON.stringify(apiPayload, null, 2));
-  alert('Survey Submitted! (Check console for transformed data)');
+  // 2. Log the transformed payload (optional, good for debugging)
+  console.log('Sending data to API:', JSON.stringify(apiPayload, null, 2));
 
-  // 3. Later: Send apiPayload to the backend API using fetch or axios
-  /*
+  // 3. Send apiPayload to the backend API using fetch
+  // *** IMPORTANT: Replace '/api/surveys' with your actual backend endpoint URL ***
+  // e.g., 'http://localhost:8081/api/surveys' if backend is on a different port
+  const apiUrl = '/api/surveys';
+
   try {
-    const response = await fetch('/api/surveys', { // Replace with your actual API endpoint
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        // Add any other headers if required, like Authorization tokens
       },
       body: JSON.stringify(apiPayload),
     });
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      // Try to get error details from backend response body
+      let errorDetails = `HTTP error! status: ${response.status}`;
+      try {
+          const errorData = await response.json();
+          errorDetails += `, Message: ${errorData.message || JSON.stringify(errorData)}`;
+      } catch (e) {
+          // If response is not JSON or empty
+          errorDetails += `, Response: ${await response.text()}`;
+      }
+      throw new Error(errorDetails);
     }
-    const result = await response.json();
+
+    const result = await response.json(); // Assuming backend returns the created survey or a success message
     console.log('Success:', result);
-    alert('Survey successfully submitted to backend!');
-    // Optionally navigate away or reset form
+    alert('Survey successfully submitted!');
+
+    // 4. Handle post-submission: Reset form and optionally navigate
+    formData.value = getInitialFormData(); // Reset form to initial state
+    // Optionally navigate to the list page or a thank you page
     // router.push('/surveys');
+    // router.push('/thank-you');
+
   } catch (error) {
     console.error('Error submitting survey:', error);
-    alert('Error submitting survey. Please try again.');
+    alert(`Error submitting survey: ${error.message}\nPlease check the console and try again.`);
+  } finally {
+    isSubmitting.value = false; // Re-enable submit button regardless of outcome
   }
-  */
-
-  // 4. Handle post-submission (e.g., navigate or reset)
-  // router.push('/surveys'); // Example: Navigate to the list page
 };
 
 // Function to handle cancel action
 const handleCancel = () => {
   console.log('Form cancelled');
-  // Optionally reset the form
-  // formData.value = { ...initial state... };
-  // Navigate back to the home page
+  // Optionally reset form data on cancel too
+  // formData.value = getInitialFormData();
   router.push('/');
 };
 </script>
