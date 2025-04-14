@@ -26,6 +26,12 @@ const routes = [
     name: 'SurveyList',
     // Lazy-load the SurveyListView component
     component: () => import(/* webpackChunkName: "survey-list" */ '../views/SurveyListView.vue')
+  },
+  {
+    path: '/survey/update/:id',
+    name: 'SurveyUpdate',
+    component: () => import(/* webpackChunkName: "survey-update" */ '../views/SurveyUpdateView.vue'),
+    props: true
   }
 ]
 
