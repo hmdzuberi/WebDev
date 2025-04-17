@@ -1,5 +1,7 @@
 # SWE 642: Student Survey Application
 
+- Assignment 4
+
 - Hamaad Zuberi
 - G01413525
 
@@ -25,7 +27,7 @@ The application fulfills the following requirements:
 ### Frontend Setup
 1. Clone the repository
 2. Navigate to the frontend directory: `cd student-survey-frontend`
-4. Start the development server: `npm run serve`
+4. Start the development server: `npm run serve -- --port 4200`
 5. Access the application at: `http://localhost:4200`
 
 ### Backend Setup
