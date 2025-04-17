@@ -1,3 +1,7 @@
+/**
+ * Service class responsible for handling the business logic for student surveys.
+ * It interacts with the SurveyRepository to perform CRUD operations.
+ */
 package edu.gmu.studentsurvey.service;
 
 import edu.gmu.studentsurvey.exception.ResourceNotFoundException;

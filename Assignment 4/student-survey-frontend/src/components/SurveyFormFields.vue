@@ -1,3 +1,4 @@
+<!-- This component renders the individual fields for the student survey form, using v-model for data binding and displaying validation errors. -->
 <template>
   <div>
     <!-- Personal Information -->

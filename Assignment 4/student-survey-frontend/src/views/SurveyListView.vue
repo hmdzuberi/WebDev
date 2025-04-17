@@ -1,3 +1,4 @@
+<!-- This view displays a list of submitted student surveys, fetches the data from the API, and provides options to update or delete each survey. -->
 <template>
   <div class="survey-list">
     <h1>List of Submitted Surveys</h1>

@@ -1,3 +1,5 @@
+// This composable manages the state and validation logic for the student survey form.
+
 import { ref } from 'vue';
 
 // Initial state factory

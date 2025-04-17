@@ -1,3 +1,5 @@
+// This file defines the routes for the Vue application using vue-router.
+
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 

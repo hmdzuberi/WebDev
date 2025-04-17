@@ -1,3 +1,5 @@
+// This composable provides functions to interact with the student survey backend API.
+
 import { ref } from 'vue';
 
 // Base API URL (Consider moving to environment variables in a real app)

@@ -1,3 +1,4 @@
+<!-- This view handles updating an existing student survey. It fetches the survey data based on the route parameter, populates the SurveyFormFields component, and handles the update submission logic. -->
 <template>
   <div class="survey-form">
     <h1>Update Student Survey</h1>

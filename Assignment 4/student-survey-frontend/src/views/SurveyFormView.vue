@@ -1,3 +1,4 @@
+<!-- This view provides the page structure for creating a new student survey, using the SurveyFormFields component and handling form submission and cancellation logic. -->
 <template>
   <div class="survey-form">
     <h1>Student Survey Form</h1>
