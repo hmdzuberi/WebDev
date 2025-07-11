@@ -1,8 +1,6 @@
-# SWE 442 Assignments
+# SWE 642 Assignment 1
 
 Submitted by: Hamaad Zuberi
-
-## Assignment 1
 
 URLs:
 
@@ -11,10 +9,6 @@ Part 1: S3 Static Website Hosting
 
 Part 2: Deploying a Webpage on a Web Server Running on Amazon EC2 in AWS Cloud
 <http://35.171.3.16/index.html>
-
-## Assignment 2
-
-URLs for survey: http://ec2-35-171-3-16.compute-1.amazonaws.com/survey.html
 
 ## Part 1: AWS S3 Static Website Hosting
 
